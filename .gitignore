@@ -1,0 +1,33 @@
+# 大文件 / 数据
+*.parquet
+*.pkl
+*.pickle
+*.feather
+data/*.parquet
+data/bt_elite_preproc.parquet
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+env/
+
+# 日志
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# 临时文件
+*.tmp
+*.bak
+*.bak.*
