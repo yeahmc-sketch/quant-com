@@ -1,5 +1,6 @@
-# 策略 v2：波动率驱动动态仓位（Dynamic TK v2）
+# DTK10：波动率驱动动态仓位（Dynamic TK v2）
 
+> **策略代号：DTK10**（Dynamic TK, HD=10）
 > **状态：定版（Final）** — 供外部 AI 审查使用
 > **仓库：** yeahmc-sketch/quant-com
 > **核心结论：** CAGR=215.0%，Sharpe=1.85，MaxDD=-16.7%（¥50k → ¥593k，2.1年）

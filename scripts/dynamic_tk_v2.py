@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""优化动态TK v2：平滑调整 + 分位数阈值 + 滞后机制"""
+"""DTK10：波动率驱动动态仓位（Dynamic TK v2，HD=10）"""
 import os, time, gc, warnings
 import numpy as np, pandas as pd
 import pyarrow.parquet as pq
