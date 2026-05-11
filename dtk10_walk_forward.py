@@ -29,8 +29,9 @@ ELITE_FACTORS = [
     'momentum_3m', 'momentum_1m', 'downside_vol_20d', 'intraday_volatility_5',
     'margin_buy_ratio', 'follow_up', 'neg_debt_ratio', 'burst_pattern',
     'coil_amplitude', 'kurtosis_20d', 'netprofit_yoy', 'gross_margin', 'asset_turn',
+    'sector_crowdedness',  # 新增：板块拥挤度因子 IC=-0.029
 ]
-assert len(ELITE_FACTORS) == 31
+assert len(ELITE_FACTORS) == 32
 
 # ==================== DTK10 参数 ====================
 CAPITAL      = 50000.0
@@ -63,11 +64,37 @@ t0 = time.time()
 # ==================== Step1: 加载数据 ====================
 log("Step1: Loading data...")
 DATA = r"C:\ML_STATION\LGBM_ML_Package\data\fusion20_master.parquet"
-table = pq.read_table(DATA, columns=["ts_code", "trade_date", "close", "open", "pct_chg"] + ELITE_FACTORS)
+FACTORS_FROM_PARQUET = [f for f in ELITE_FACTORS if f != 'sector_crowdedness']
+table = pq.read_table(DATA, columns=["ts_code", "trade_date", "close", "open", "pct_chg", "amount"] + FACTORS_FROM_PARQUET)
 df = table.to_pandas()
 df.columns = [c.lower() for c in df.columns]
 df["trade_date"] = df["trade_date"].astype(str)
 df["pct_chg"] = df["pct_chg"].fillna(0.0)
+
+# ====== 计算 sector_crowdedness ======
+# 加载行业映射
+import tushare as ts
+ts_token_local = "2e50aa62898e603850c324723dbcf05fbb5fa671c6160d26e4593f41"
+ts.set_token(ts_token_local)
+basic = ts.pro_api().stock_basic(list_status='L', fields='ts_code,industry')
+ind_map = basic.set_index('ts_code')['industry'].to_dict()
+df['industry'] = df['ts_code'].map(ind_map)
+
+# 计算行业级别10日/60日成交额比
+sector_vol = df.groupby(['industry','trade_date'])['amount'].sum().reset_index()
+sector_vol = sector_vol.sort_values(['industry','trade_date'])
+g_sv = sector_vol.groupby('industry')
+sector_vol['vol_10'] = g_sv['amount'].transform(lambda s: s.rolling(10, min_periods=5).mean())
+sector_vol['vol_60'] = g_sv['amount'].transform(lambda s: s.rolling(60, min_periods=30).mean())
+sector_vol['sector_crowdedness'] = sector_vol['vol_10'] / (sector_vol['vol_60'] + 1)
+
+# 映射回个股
+crowd_map = sector_vol.set_index(['industry','trade_date'])['sector_crowdedness']
+df = df.set_index(['industry','trade_date'])
+df['sector_crowdedness'] = crowd_map
+df = df.reset_index()
+df['sector_crowdedness'] = df['sector_crowdedness'].fillna(1.0)
+log(f"  sector_crowdedness: mean={df['sector_crowdedness'].mean():.3f}")
 
 # Target: T日close -> T+5日close（训练目标，不变）
 g = df.groupby("ts_code")["close"]

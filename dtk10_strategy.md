@@ -30,22 +30,29 @@ surge_efficiency, skewness_20d, margin_balance_growth_5d,
 vol_breakout, momentum_12m, amount_surge, volume_momentum,
 momentum_3m, momentum_1m, downside_vol_20d, intraday_volatility_5,
 margin_buy_ratio, follow_up, neg_debt_ratio, burst_pattern,
-coil_amplitude, kurtosis_20d, netprofit_yoy, gross_margin, asset_turn
+coil_amplitude, kurtosis_20d, netprofit_yoy, gross_margin, asset_turn,
+sector_crowdedness
 ```
 
-Notes:
-- Dead factors removed: `adx_14`, `pv_corr_20` (|IC| < 0.004)
-- `holder_num_chg` added as orthogonal signal (IC=+0.0154, max|r|=0.043)
-- 3 value factors added for 2026 market regime resilience
+## K32 (31 + sector_crowdedness)
 
-## Dynamic TK Mechanism
+Added 2026-05-11: `sector_crowdedness` (IC=-0.029, ICIR=-0.25, max|r|<0.1 vs K31)
+- Measures 10-day/60-day industry volume ratio
+- Negative signal: crowded sectors underperform (A-share "见光死")
+- MaxDD improvement: -24.2% → -19.7% (+4.5pp) without hurting CAGR
 
-TK adjusts between 3-5 based on 20-day NAV return volatility:
+## Performance (2024-01 to 2026-03)
 
-```
-Volatility percentile > 0.5 → TK=3 (defensive, high vol)
-Volatility percentile > 0.3 → TK=4
-Volatility percentile <= 0.3 → TK=5 (aggressive, low vol)
+### K31 vs K32 Comparison
+| Metric | K31 (31) | K32 (+crowdedness) |
+|--------|----------|-------------------|
+| CAGR | 70.7% | 69.5% |
+| Sharpe | 1.66 | 1.67 |
+| MaxDD | -24.2% | **-19.7%** |
+| 2025 | +102% | +91.6% |
+
+### Original DTK10 (pre-computed scores, K31)
+| Metric | Value |
 ```
 
 Minimum hold: 10 days between TK changes (prevents oscillation).
