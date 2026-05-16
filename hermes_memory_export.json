@@ -1,0 +1,22 @@
+{
+  "memory": [
+    "用户叫陈老撕，小资金中国A股散户，专注于股票量化分析和机器学习因子开发。用户称呼助手为马克。",
+    "技术配置：ML工作站(i7 CPU、32GB RAM、RTX 5060Ti 16GB GPU)、QQ邮箱(18313835@qq.com)、GitHub(yeahmc-sketch/quant-com)。",
+    "邮箱配置：发件人/收件人都是18313835@qq.com(QQ邮箱)。SMTP服务器smtp.qq.com，端口465(SSL)。密码存在环境变量V9_SMTP_PASS。所有launchd策略任务都用这个邮箱发通知。",
+    "GitHub认证：用户yeahmc-sketch，仓库quant-com，有完全读写权限。",
+    "量化系统：早盘9:32 morningcheck检查市场并邮件通知；收盘后15:01 DB01下载数据；15:30 tushare_poll轮询；各策略17:00运行；所有任务launchd调度。",
+    "赛马策略(2026-05-16)：B2策略(10天Fusion20+2xLGBM+NavDD8%)和MF策略(10天Fusion20+DMA)并行赛马，模拟至2026年6月底择优选入实盘。",
+    "B2策略路径：WorkBuddy/Claw/v74/backtest/b2_paper_trade.py",
+    "MF策略路径：WorkBuddy/Claw/v74/backtest/mf22_paper_trade.py",
+    "合并报告脚本：WorkBuddy/Claw/v74/backtest/merged_daily_report.py",
+    "用户反馈：马克更适合因子挖掘理论研究，不太适合实操类任务(launchd调试、进程排查、系统运维)。",
+    "Python环境：系统Python3.9，pandas/numpy/scipy可用。",
+    "数据库路径：WorkBuddy/Claw/data/db/market.db，K线表名daily_kline。"
+  ],
+  "user": [
+    "用户叫陈老撕，称呼助手为马克。",
+    "小资金中国A股散户，专注于股票量化分析和机器学习因子开发。",
+    "偏好表格格式文档和专业排版。",
+    "用户反馈：马克更适合因子挖掘理论研究，不太适合实操类任务。"
+  ]
+}
